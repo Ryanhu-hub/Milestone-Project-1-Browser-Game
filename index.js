@@ -6,12 +6,11 @@ canvas.height = innerHeight;
 
 class Player {
   constructor() {
-
-
     this.velocity = {
       x: 0,
       y: 0,
     };
+    this.rotation = 0
 
     const image = new Image();
     image.src =
@@ -34,6 +33,11 @@ class Player {
     //     this.height)
     ////was supposed to cut line 37 for move it for line 48, but wouldn't draw the ship and background. 
     ////probably because the image isn't local and taken from an http. 27:10/2:06:38 from video
+    c.save()
+    // c.translate(
+    //   player.position.x + player.width / 2,
+    //   player.position.y + player.height / 2)
+
     if (this.image)
     c.drawImage(
       this.image,
@@ -42,6 +46,7 @@ class Player {
       this.width,
       this.height
     );
+    c.restore()
   }
 
   update() {
@@ -71,10 +76,12 @@ function animate() {
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
-//still goes through the left side
+//still goes through the left side but fine on right. 32:10
   if (keys.a.pressed && player.position.x >= 0) {
     player.velocity.x = -5
-  } else if (keys.d.pressed) {
+    player.rotation = -.15
+  } else if (keys.d.pressed && 
+    player.position.x +player.width <= canvas.width) {
     player.velocity.x = 5
   } else {
     player.velocity.x = 0
